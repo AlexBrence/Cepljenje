@@ -6,9 +6,10 @@
     <hr>
 </div>
 <div class="form-placeholder">
-    <form method="post" action="/home/">
+    <form method="post" action="/">
         {% csrf_token %}
         {{ form.as_p }}
+        <br>
         <button type="submit" name="save" class="btn btn-success">Prijava</button>
     </form>
 </div>

@@ -1,0 +1,19 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<div class="header">
+    <h3 style="padding: 20px;">Prijava je bila uspešna!</h3>
+    <hr>
+</div>
+<div class="after-form">
+    <h4>Vaši podatki: </h4>
+    <br>
+    <p><b>EMšO: </b>{{ emso }}</p>
+    <p><b>IME: </b>{{ ime }}</p>
+    <p><b>PRIIMEK: </b>{{ priimek }}</p>
+    <p><b>E-MAIL: </b>{{ email }}</p>
+    <p><b>DATUM PRIJAVE: </b>{{ datum }}</p>
+    <br><br>
+    <a href="/">Nazaj na obrazec za prijavo</a>
+</div>
+{% endblock %}
