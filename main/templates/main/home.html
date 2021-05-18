@@ -1,0 +1,15 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<div class="header">
+    <h1 class="homeHeader">Tukaj se lahko prijaviš na cepljenje</h1>
+    <hr>
+</div>
+<div class="form-placeholder">
+    <form method="post" action="/home/">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" name="save" class="btn btn-success">Prijava</button>
+    </form>
+</div>
+{% endblock %}
