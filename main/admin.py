@@ -1,11 +1,11 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
 from .models import Person
+from .forms import VaccinationSignup
 
 # Register your models here.
 
-
-class PersonAdmin(UserAdmin):
+class PersonAdmin(admin.ModelAdmin):
+    form = VaccinationSignup
     list_display = ("emso", "nameInitial", "surnameInitial", "email", "signupDate")
     search_fields = ("emso", "email",)
 
@@ -13,6 +13,5 @@ class PersonAdmin(UserAdmin):
     list_filter = ()
     fieldsets = ()
     ordering = ('email',)
-
 
 admin.site.register(Person, PersonAdmin)

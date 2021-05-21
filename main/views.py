@@ -1,10 +1,8 @@
-import pytz
 from django.urls import reverse
 from .models import Person
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render
 from .forms import VaccinationSignup
-from datetime import datetime, timezone
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 
 # Create your views here.
 
@@ -17,12 +15,11 @@ def index(response):
                 _emso = form.cleaned_data["emso"]
                 ime = form.cleaned_data["nameInitial"].upper()
                 priimek = form.cleaned_data["surnameInitial"].upper()
-                datum = datetime.now(pytz.timezone('Europe/Ljubljana'))
                 person = Person.objects.get(emso = _emso)
                 return HttpResponseRedirect(reverse("ze-prijavljen", args=[_emso]))
 
             except Person.DoesNotExist:
-                person = Person(emso = _emso, nameInitial = ime, surnameInitial = priimek, email = _email, signupDate = datum)
+                person = Person(emso = _emso, nameInitial = ime, surnameInitial = priimek, email = _email)
                 person.save()
                 return HttpResponseRedirect(reverse("prijava-uspesna", args=[_emso]))
             except Exception as e:
@@ -34,8 +31,9 @@ def index(response):
 
 def ze_prijavljen(request, emso):
     p = Person.objects.get(emso=emso)
-    return render(request, "main/ze-prijavljen.html", {"person": p})
+    return render(request, "main/ze-prijavljen.html", {"person": p, "date": p.signupDate.strftime("%d-%m-%Y %H:%M:%S")})
+
 
 def prijava_uspesna(request, emso):
     p = Person.objects.get(emso=emso)
-    return render(request, "main/prijava-uspesna.html", {"person": p})
+    return render(request, "main/prijava-uspesna.html", {"person": p, "date": p.signupDate.strftime("%d-%m-%Y %H:%M:%S")})
