@@ -8,11 +8,11 @@
 <div class="after-form">
     <h4>Vaši podatki: </h4>
     <br>
-    <p><b>EMšO: </b>{{ emso }}</p>
-    <p><b>IME: </b>{{ ime }}</p>
-    <p><b>PRIIMEK: </b>{{ priimek }}</p>
-    <p><b>E-MAIL: </b>{{ email }}</p>
-    <p><b>DATUM PRIJAVE: </b>{{ datum }}</p>
+    <p><b>EMšO: </b>{{ person.emso }}</p>
+    <p><b>IME: </b>{{ person.nameInitial }}</p>
+    <p><b>PRIIMEK: </b>{{ person.surnameInitial }}</p>
+    <p><b>E-MAIL: </b>{{ person.email }}</p>
+    <p><b>DATUM PRIJAVE: </b>{{ person.signupDate }}</p>
     <br><br>
     <a href="/">Nazaj na obrazec za prijavo</a>
 </div>

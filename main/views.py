@@ -1,6 +1,7 @@
 import pytz
+from django.urls import reverse
 from .models import Person
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import VaccinationSignup
 from datetime import datetime, timezone
 from django.http import HttpResponse, HttpResponseRedirect
@@ -17,21 +18,24 @@ def index(response):
                 ime = form.cleaned_data["nameInitial"].upper()
                 priimek = form.cleaned_data["surnameInitial"].upper()
                 datum = datetime.now(pytz.timezone('Europe/Ljubljana'))
-
-                if len(_emso) != 13 or not _emso.isdigit():
-                    return HttpResponse("<h3>Nepravilen EMŠO</h3>")
-                elif ime.isdigit() or priimek.isdigit():
-                    return HttpResponse("<h3>Nepravilno ime ali priimek</h3>")
-                elif Person.objects.get(emso=_emso):
-                    return render(response, "main/ze-prijavljen.html", {"datum": Person.objects.get(emso=_emso).signupDate.strftime("%d/%m/%Y %H:%M:%S")})
+                person = Person.objects.get(emso = _emso)
+                return HttpResponseRedirect(reverse("ze-prijavljen", args=[_emso]))
 
             except Person.DoesNotExist:
-                person = Person(emso=_emso, nameInitial=ime, surnameInitial=priimek, email=_email, signupDate=datum)
+                person = Person(emso = _emso, nameInitial = ime, surnameInitial = priimek, email = _email, signupDate = datum)
                 person.save()
-                return render(response, "main/prijava-uspesna.html", {"email": _email, "emso": _emso, "ime": ime, "priimek": priimek, "datum": datum.strftime("%d/%m/%Y %H:%M:%S")})
+                return HttpResponseRedirect(reverse("prijava-uspesna", args=[_emso]))
             except Exception as e:
-                return HttpResponse(e)
-
+                return HttpResponseRedirect(e)
     else:
         form = VaccinationSignup()
     return render(response, "main/home.html", {"form":form})
+
+
+def ze_prijavljen(request, emso):
+    p = Person.objects.get(emso=emso)
+    return render(request, "main/ze-prijavljen.html", {"person": p})
+
+def prijava_uspesna(request, emso):
+    p = Person.objects.get(emso=emso)
+    return render(request, "main/prijava-uspesna.html", {"person": p})
